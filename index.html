@@ -8,6 +8,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
+
+
+
   :root {
     --primary: #00f5ff;
     --secondary: #ff006e;
@@ -32,6 +35,22 @@
     overflow-x: hidden;
     cursor: none;
   }
+
+  /* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Firefox */
+body {
+  scrollbar-width: none;
+}
+
+/* IE viejo */
+body {
+  -ms-overflow-style: none;
+}
 
   /* CURSOR */
   .cursor {
@@ -815,7 +834,7 @@
         <span class="card-corner br"></span>
         <div class="card-media-wrap">
           <!-- ✏️ Reemplaza con tu imagen -->
-          <img class="card-media" src="imagenes/Captura de pantalla 2026-04-27 142339.png" alt="Work 1" loading="lazy">
+          <img class="card-media" src="imagenes/diseñocamisa.png" alt="Work 1" loading="lazy">
           <div class="card-type-badge">◼ IMAGE</div>
           <div class="card-overlay">
             <button class="overlay-btn">🔍</button>
@@ -898,6 +917,26 @@
           <div class="card-category">UI AND VFX</div>
           <div class="card-title">VFX Magic</div>
           <div class="card-desc">VFX made in Blender, magical style, animated.</div>
+        </div>
+      </div>
+
+            <div class="portfolio-card reveal" data-cat="DESIGN" data-id="5"
+           onclick="openLightbox(this)" style="animation-delay:0.Xs">
+        <span class="card-corner tl"></span>
+        <span class="card-corner tr"></span>
+        <span class="card-corner bl"></span>
+        <span class="card-corner br"></span>
+        <div class="card-media-wrap">
+          <img class="card-media" src="imagenes/boceto.png" alt="Work Design" loading="lazy">
+          <div class="card-type-badge">◼ IMAGEN</div>
+          <div class="card-overlay">
+            <button class="overlay-btn">🔍</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">DESIGN</div>
+          <div class="card-title">Design Character </div>
+          <div class="card-desc">This is a sketch of a character for a horror game, which I will model soon..</div>
         </div>
       </div>
 
@@ -1158,6 +1197,20 @@ function handleForm(e) {
   setTimeout(()=>n.classList.remove('show'), 3500);
   e.target.reset();
 }
+
+function playClickSound() {
+  const sound = document.getElementById('click-sound');
+  if (sound) {
+    sound.currentTime = 0; // reinicia para que suene siempre
+    sound.play().catch(() => {});
+  }
+}
+
+document.querySelectorAll('button, a, .filter-btn, .portfolio-card, .overlay-btn').forEach(el => {
+  el.addEventListener('click', playClickSound);
+});
 </script>
+<audio id="click-sound" src="sound/clic.mp3" preload="auto"></audio>
+
 </body>
 </html>
