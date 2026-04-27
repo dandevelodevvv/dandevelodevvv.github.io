@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PORTFOLIO DANDEV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #00f5ff;
+    --secondary: #ff006e;
+    --accent: #7b2fff;
+    --gold: #ffd700;
+    --bg-dark: #020818;
+    --bg-mid: #070d2a;
+    --bg-card: rgba(0, 20, 60, 0.7);
+    --text: #e8f4ff;
+    --text-dim: #7090b0;
+    --glow-cyan: 0 0 20px rgba(0,245,255,0.5), 0 0 40px rgba(0,245,255,0.3);
+    --glow-pink: 0 0 20px rgba(255,0,110,0.5), 0 0 40px rgba(255,0,110,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CURSOR */
+  .cursor {
+    position: fixed; width: 12px; height: 12px;
+    background: var(--primary); border-radius: 50%;
+    pointer-events: none; z-index: 10000;
+    transition: transform 0.1s ease;
+    box-shadow: var(--glow-cyan);
+  }
+  .cursor-trail {
+    position: fixed; width: 30px; height: 30px;
+    border: 1px solid var(--primary); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transition: all 0.15s ease; opacity: 0.5;
+  }
+
+  /* PARTICLES */
+  #particles-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+
+  /* GRID BG */
+  .grid-bg {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+    z-index: 9999; box-shadow: var(--glow-cyan);
+    transition: width 0.1s ease;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 1000; padding: 1rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(2,8,24,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,245,255,0.15);
+  }
+  .logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem; font-weight: 900;
+    color: var(--primary); text-shadow: var(--glow-cyan);
+    letter-spacing: 3px; position: relative;
+  }
+  .logo::after {
+    content: attr(data-text);
+    position: absolute; left: 0; top: 0;
+    color: var(--secondary);
+    clip-path: inset(0 100% 0 0);
+    animation: glitch-clip 4s infinite;
+  }
+  @keyframes glitch-clip {
+    0%,90%,100% { clip-path: inset(0 100% 0 0); }
+    92% { clip-path: inset(30% 0 50% 0); }
+    94% { clip-path: inset(70% 0 10% 0); }
+    96% { clip-path: inset(10% 0 80% 0); }
+  }
+  nav ul { list-style: none; display: flex; gap: 2.5rem; }
+  nav ul li a {
+    text-decoration: none; color: var(--text-dim);
+    font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    transition: all 0.3s ease; position: relative;
+  }
+  nav ul li a::after {
+    content: ''; position: absolute;
+    bottom: -4px; left: 0; width: 0; height: 1px;
+    background: var(--primary); transition: width 0.3s ease;
+    box-shadow: var(--glow-cyan);
+  }
+  nav ul li a:hover { color: var(--primary); }
+  nav ul li a:hover::after { width: 100%; }
+  .nav-jp {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.7rem; color: var(--accent);
+    opacity: 0.6; display: block; text-align: center;
+  }
+
+  /* SOCIAL SIDEBAR */
+  .social-bar {
+    position: fixed; left: 2rem; bottom: 30%;
+    display: flex; flex-direction: column; gap: 1rem;
+    z-index: 100;
+  }
+  .social-bar a {
+    width: 38px; height: 38px;
+    background: rgba(0,20,60,0.8);
+    border: 1px solid rgba(0,245,255,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim); font-size: 0.9rem;
+    text-decoration: none; transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+  .social-bar a:hover {
+    border-color: var(--primary); color: var(--primary);
+    box-shadow: var(--glow-cyan); transform: scale(1.2);
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 1; padding: 0 2rem;
+  }
+  .hero-content { text-align: center; max-width: 900px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(123,47,255,0.2);
+    border: 1px solid var(--accent); border-radius: 2px;
+    padding: 0.3rem 1rem; font-size: 0.75rem;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+    animation: fadeInDown 1s ease;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  .hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 7rem);
+    font-weight: 900; line-height: 0.9;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+  .hero-title .line1 {
+    display: block; color: var(--text);
+    text-shadow: 0 0 40px rgba(232,244,255,0.3);
+  }
+  .hero-title .line2 {
+    display: block;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(0,245,255,0.4));
+  }
+  .hero-subtitle {
+    font-size: 1.1rem; color: var(--text-dim);
+    letter-spacing: 3px; margin-bottom: 3rem;
+    animation: fadeInUp 1s ease 0.4s both; font-weight: 300;
+  }
+  .hero-btns {
+    display: flex; gap: 1.5rem; justify-content: center;
+    flex-wrap: wrap; animation: fadeInUp 1s ease 0.6s both;
+  }
+  .btn-primary {
+    padding: 0.9rem 2.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border: none; border-radius: 2px;
+    color: var(--bg-dark); font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+    cursor: none; position: relative; overflow: hidden;
+    transition: all 0.3s ease; text-decoration: none;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+  }
+  .btn-primary:hover::before { left: 100%; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--glow-cyan); }
+  .btn-secondary {
+    padding: 0.9rem 2.5rem;
+    background: transparent; border: 1px solid var(--primary);
+    border-radius: 2px; color: var(--primary);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+    cursor: none; transition: all 0.3s ease; text-decoration: none;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-secondary:hover {
+    background: rgba(0,245,255,0.1);
+    box-shadow: var(--glow-cyan); transform: translateY(-2px);
+  }
+  .scroll-indicator {
+    position: absolute; bottom: 2rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.5rem; color: var(--text-dim);
+    font-size: 0.7rem; letter-spacing: 3px;
+    animation: float 2s ease-in-out infinite;
+  }
+  .scroll-indicator .line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--primary), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; padding: 6rem 2rem; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 4rem; }
+  .section-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.75rem; color: var(--secondary);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-bottom: 0.5rem; opacity: 0.8;
+  }
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900; color: var(--text);
+    position: relative; display: inline-block;
+  }
+  .section-title::after {
+    content: ''; position: absolute;
+    bottom: -10px; left: 50%; transform: translateX(-50%);
+    width: 60%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  }
+  .section-line {
+    width: 100px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    margin: 1.5rem auto 0;
+  }
+
+  /* REVEAL */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* =====================
+     ABOUT SECTION
+  ===================== */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center;
+  }
+
+  /* --- FOTO DE PERFIL ---
+     Pon tu foto en: imagenes/perfil.jpg (o .png .webp)
+     Reemplaza el src de la etiqueta <img> de abajo.
+     El marco se ajusta automáticamente al tamaño de la imagen. */
+  .about-image-wrap {
+    position: relative;
+    display: inline-block; /* se ajusta al tamaño de la imagen */
+  }
+  .about-image-wrap img {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    height: auto;           /* respeta proporciones originales */
+    border-radius: 2px;
+    border: 1px solid rgba(0,245,255,0.3);
+    position: relative;
+    z-index: 1;
+  }
+  /* Marco decorativo exterior — sigue el tamaño de la imagen */
+  .about-image-wrap::before {
+    content: '';
+    position: absolute;
+    top: -10px; left: -10px;
+    right: 10px; bottom: 10px;
+    border: 1px solid rgba(0,245,255,0.25);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* Marco decorativo interior (acento rosa) */
+  .about-image-wrap::after {
+    content: '';
+    position: absolute;
+    top: 10px; left: 10px;
+    right: -10px; bottom: -10px;
+    border: 1px solid rgba(255,0,110,0.2);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* Esquinas decorativas animadas */
+  .about-image-wrap .corner {
+    position: absolute; width: 18px; height: 18px;
+    z-index: 2; pointer-events: none;
+  }
+  .corner.tl { top: -2px; left: -2px; border-top: 2px solid var(--primary); border-left: 2px solid var(--primary); }
+  .corner.tr { top: -2px; right: -2px; border-top: 2px solid var(--primary); border-right: 2px solid var(--primary); }
+  .corner.bl { bottom: -2px; left: -2px; border-bottom: 2px solid var(--primary); border-left: 2px solid var(--primary); }
+  .corner.br { bottom: -2px; right: -2px; border-bottom: 2px solid var(--primary); border-right: 2px solid var(--primary); }
+
+  /* Scan line sobre la foto */
+  .about-image-wrap .scan {
+    position: absolute; left: 0; right: 0;
+    height: 2px; background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    opacity: 0.4; z-index: 3;
+    animation: scanImg 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes scanImg {
+    0%   { top: 0%; opacity: 0.6; }
+    50%  { opacity: 0.3; }
+    100% { top: 100%; opacity: 0.6; }
+  }
+
+  .about-text h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem; font-weight: 700;
+    margin-bottom: 1rem; color: var(--primary);
+  }
+  .about-text p {
+    color: var(--text-dim); line-height: 1.9;
+    margin-bottom: 1.5rem; font-size: 1rem; font-weight: 300;
+  }
+  .skills-grid { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 2rem; }
+  .skill-tag {
+    padding: 0.4rem 1rem;
+    border: 1px solid rgba(0,245,255,0.3); border-radius: 2px;
+    font-size: 0.8rem; letter-spacing: 1px;
+    color: var(--primary); background: rgba(0,245,255,0.05);
+    transition: all 0.3s ease;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  }
+  .skill-tag:hover {
+    background: rgba(0,245,255,0.15);
+    box-shadow: var(--glow-cyan); transform: translateY(-2px);
+  }
+
+  /* =====================
+     PORTFOLIO SECTION
+  ===================== */
+
+  /* FILTERS */
+  .filter-bar {
+    display: flex; gap: 1rem; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 3rem;
+  }
+  .filter-btn {
+    padding: 0.5rem 1.5rem;
+    background: transparent;
+    border: 1px solid rgba(0,245,255,0.2); border-radius: 2px;
+    color: var(--text-dim); font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 2px;
+    cursor: none; transition: all 0.3s ease;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  }
+  .filter-btn.active, .filter-btn:hover {
+    border-color: var(--primary); color: var(--primary);
+    background: rgba(0,245,255,0.1); box-shadow: var(--glow-cyan);
+  }
+
+  /* GRID */
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* ---- CARD ----
+     El marco de la card se ajusta al contenido de la imagen.
+     La imagen puede ser horizontal, vertical o cuadrada —
+     el card mantiene el aspect-ratio real del archivo. */
+  .portfolio-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(0,245,255,0.15);
+    border-radius: 4px; overflow: hidden;
+    position: relative; cursor: none;
+    transition: all 0.4s ease;
+    animation: cardAppear 0.5s ease both;
+  }
+  @keyframes cardAppear {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .portfolio-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary);
+    box-shadow: var(--glow-cyan), 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .portfolio-card:hover .card-overlay { opacity: 1; }
+  .portfolio-card:hover .card-media { transform: scale(1.05); }
+
+  /* Contenedor de media — no fuerza aspect-ratio fijo */
+  .card-media-wrap {
+    position: relative; overflow: hidden;
+    background: var(--bg-mid);
+  }
+  .card-media {
+    display: block; width: 100%; height: auto;
+    transition: transform 0.5s ease;
+    object-fit: cover;
+  }
+  /* Si quieres que todas las cards tengan altura uniforme,
+     descomenta la línea de abajo (recorta imágenes muy verticales): */
+  /* .card-media { height: 220px; object-fit: cover; } */
+
+  .card-type-badge {
+    position: absolute; top: 0.8rem; left: 0.8rem;
+    padding: 0.2rem 0.7rem;
+    background: rgba(2,8,24,0.85);
+    border: 1px solid var(--primary); border-radius: 2px;
+    font-size: 0.65rem; letter-spacing: 2px;
+    color: var(--primary); font-family: 'Orbitron', sans-serif;
+    z-index: 2;
+  }
+
+  /* Esquinas decorativas de cada card */
+  .card-corner {
+    position: absolute; width: 12px; height: 12px;
+    z-index: 3; pointer-events: none;
+    transition: all 0.3s ease; opacity: 0;
+  }
+  .portfolio-card:hover .card-corner { opacity: 1; }
+  .card-corner.tl { top: 4px; left: 4px; border-top: 2px solid var(--primary); border-left: 2px solid var(--primary); }
+  .card-corner.tr { top: 4px; right: 4px; border-top: 2px solid var(--primary); border-right: 2px solid var(--primary); }
+  .card-corner.bl { bottom: 4px; left: 4px; border-bottom: 2px solid var(--primary); border-left: 2px solid var(--primary); }
+  .card-corner.br { bottom: 4px; right: 4px; border-bottom: 2px solid var(--primary); border-right: 2px solid var(--primary); }
+
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 30%, rgba(2,8,24,0.92) 100%);
+    opacity: 0; transition: opacity 0.3s ease;
+    display: flex; align-items: flex-end; padding: 1.2rem;
+    z-index: 2;
+  }
+  .overlay-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid rgba(0,245,255,0.5);
+    background: rgba(0,245,255,0.1);
+    color: var(--primary); display: flex;
+    align-items: center; justify-content: center;
+    font-size: 1rem; cursor: pointer; transition: all 0.3s ease;
+  }
+  .overlay-btn:hover { background: var(--primary); color: var(--bg-dark); }
+
+  .card-info { padding: 1.2rem; }
+  .card-category {
+    font-size: 0.7rem; letter-spacing: 3px;
+    color: var(--secondary); text-transform: uppercase; margin-bottom: 0.3rem;
+  }
+  .card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .card-desc {
+    font-size: 0.82rem; color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(2,8,24,0.97);
+    z-index: 9000;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
+    backdrop-filter: blur(10px);
+  }
+  .lightbox.active { opacity: 1; pointer-events: all; }
+  .lightbox-content {
+    max-width: 950px; width: 92%;
+    position: relative;
+    transform: scale(0.9); transition: transform 0.4s ease;
+  }
+  .lightbox.active .lightbox-content { transform: scale(1); }
+  /* El lightbox tampoco fuerza aspect-ratio — muestra la imagen completa */
+  .lightbox-media {
+    display: block; width: 100%; max-height: 75vh;
+    object-fit: contain;
+    border: 1px solid rgba(0,245,255,0.2); border-radius: 4px;
+  }
+  .lightbox-info { padding: 1.2rem 0; }
+  .lightbox-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem; color: var(--primary); margin-bottom: 0.4rem;
+  }
+  .lightbox-desc { color: var(--text-dim); line-height: 1.7; font-size: 0.95rem; }
+  .lightbox-close {
+    position: absolute; top: -50px; right: 0;
+    width: 40px; height: 40px;
+    background: rgba(255,0,110,0.2);
+    border: 1px solid var(--secondary); border-radius: 50%;
+    color: var(--secondary); font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.3s ease;
+  }
+  .lightbox-close:hover { background: var(--secondary); color: white; }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+  }
+  .contact-info h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem; color: var(--primary); margin-bottom: 1rem;
+  }
+  .contact-info p { color: var(--text-dim); line-height: 1.8; margin-bottom: 2rem; font-size: 0.9rem; }
+  .contact-items { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.8rem 1.2rem;
+    background: var(--bg-card);
+    border: 1px solid rgba(0,245,255,0.1); border-radius: 2px;
+    cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+  }
+  .contact-item:hover {
+    border-color: var(--primary);
+    background: rgba(0,245,255,0.05); transform: translateX(5px);
+  }
+  .contact-item-icon {
+    font-size: 1.3rem; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,245,255,0.1); border-radius: 50%; flex-shrink: 0;
+  }
+  .contact-item-label { font-size: 0.65rem; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; }
+  .contact-item-value { font-size: 0.9rem; color: var(--text); font-weight: 600; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%; background: var(--bg-card);
+    border: 1px solid rgba(0,245,255,0.15); border-radius: 2px;
+    padding: 0.8rem 1.2rem; color: var(--text);
+    font-family: 'Rajdhani', sans-serif; font-size: 1rem;
+    outline: none; transition: all 0.3s ease;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: var(--primary); box-shadow: 0 0 10px rgba(0,245,255,0.15);
+  }
+  .contact-form textarea { min-height: 140px; resize: vertical; }
+  .send-btn {
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border: none; border-radius: 2px; color: var(--bg-dark);
+    font-family: 'Orbitron', sans-serif; font-size: 0.85rem;
+    font-weight: 700; letter-spacing: 2px; cursor: pointer;
+    transition: all 0.3s ease;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .send-btn:hover { transform: translateY(-2px); box-shadow: var(--glow-cyan); }
+
+  footer {
+    position: relative; z-index: 1;
+    padding: 3rem 2rem; text-align: center;
+    border-top: 1px solid rgba(0,245,255,0.1);
+  }
+  footer p { color: var(--text-dim); font-size: 0.8rem; letter-spacing: 2px; }
+  footer span { color: var(--secondary); }
+
+  /* LOADING */
+  #loading-screen {
+    position: fixed; inset: 0;
+    background: var(--bg-dark); z-index: 99999;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    transition: opacity 0.8s ease;
+  }
+  #loading-screen.fade-out { opacity: 0; pointer-events: none; }
+  .loading-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem; font-weight: 900;
+    color: var(--primary); text-shadow: var(--glow-cyan);
+    margin-bottom: 2rem; letter-spacing: 6px;
+  }
+  .loading-bar-container {
+    width: 300px; height: 2px;
+    background: rgba(0,245,255,0.1); border-radius: 1px; overflow: hidden;
+  }
+  .loading-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    box-shadow: var(--glow-cyan);
+  }
+  .loading-percent {
+    font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
+    color: var(--text-dim); margin-top: 1rem; letter-spacing: 3px;
+  }
+
+  /* NOTIFICATION */
+  .notification {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--bg-mid); border: 1px solid var(--primary);
+    border-radius: 4px; padding: 1rem 1.5rem;
+    color: var(--text); font-size: 0.9rem; z-index: 9999;
+    transform: translateX(200%); transition: transform 0.4s ease;
+    box-shadow: var(--glow-cyan); max-width: 300px;
+  }
+  .notification.show { transform: translateX(0); }
+
+  /* HIDDEN (filter) */
+  .portfolio-card.hidden { display: none; }
+
+  /* ANIMATIONS */
+  @keyframes fadeInDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeInUp   { from { opacity:0; transform:translateY(30px);  } to { opacity:1; transform:translateY(0); } }
+  @keyframes float {
+    0%,100% { transform:translateX(-50%) translateY(0); }
+    50%      { transform:translateX(-50%) translateY(-10px); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { gap: 1.2rem; }
+    nav ul li a { font-size: 0.75rem; }
+    .nav-jp { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .about-image-wrap img { max-width: 100%; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .social-bar { display: none; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading-screen">
+  <div class="loading-logo">PORTFOLIO</div>
+  <div class="loading-bar-container">
+    <div class="loading-bar" id="loading-bar"></div>
+  </div>
+  <div class="loading-percent" id="loading-percent">0%</div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursor-trail"></div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar" id="progress-bar"></div>
+
+<div class="grid-bg"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <!-- ✏️ Cambia "PORTAFOLIO" por tu nombre o marca -->
+  <div class="logo" data-text="PORTAFOLIO">DANDEV PORT</div>
+  <ul>
+    <li><a href="#hero"><span>Home</span><span class="nav-jp">ホーム</span></a></li>
+    <li><a href="#sobre-mi"><span>About Me</span><span class="nav-jp">について</span></a></li>
+    <li><a href="#portafolio"><span>Works</span><span class="nav-jp">作品集</span></a></li>
+    <li><a href="#contacto"><span>Contact</span><span class="nav-jp">連絡先</span></a></li>
+  </ul>
+</nav>
+
+<!-- SOCIAL SIDEBAR -->
+<!-- ✏️ Reemplaza los href con tus links reales. Borra los que no uses. -->
+<div class="social-bar">
+  <a href="mailto:teufelcontact@gmail.com" title="Email">📧</a>
+  <a href="https://discord.com/users/539998567943634945" target="_blank" title="Discord">💬</a>
+  <!-- <a href="https://tiktok.com/@tuusuario" target="_blank" title="TikTok">🎵</a> -->
+  <!-- <a href="https://youtube.com/@tucanal" target="_blank" title="YouTube">▶️</a> -->
+</div>
+
+<!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✦ Creative Portfolio 2026 ✦</div>
+    <h1 class="hero-title">
+      <!-- ✏️ Pon tu nombre en line1 y tu profesión en line2 -->
+      <span class="line1">DANDEV</span>
+      <span class="line2">DEVELOPER</span>
+    </h1>
+    <!-- ✏️ Tu tagline breve -->
+    <p class="hero-subtitle">DESIGN · ART · TECHNOLOGY · VISION</p>
+    <div class="hero-btns">
+      <a href="#portafolio" class="btn-primary">VIEW WORK</a>
+      <a href="#contacto" class="btn-secondary">CONTACT ME</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>SCROLL</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SOBRE MÍ
+═══════════════════════════════════════ -->
+<section id="sobre-mi">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-label">// 01 — ABOUT ME</p>
+      <h2 class="section-title">WHO AM I?</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+
+      <!-- FOTO DE PERFIL ──────────────────────────────────────
+           1. Copia tu foto dentro de la carpeta  imagenes/
+           2. Cambia "perfil.jpg" por el nombre exacto de tu archivo
+           3. El marco y las esquinas se ajustan automáticamente
+           Formatos soportados: .jpg  .jpeg  .png  .webp
+      ──────────────────────────────────────────────────────── -->
+      <div class="about-image-wrap reveal">
+        <span class="corner tl"></span>
+        <span class="corner tr"></span>
+        <span class="corner bl"></span>
+        <span class="corner br"></span>
+        <div class="scan"></div>
+        <img src="imagenes/IMAGEN.png" alt="Mi foto de perfil">
+      </div>
+
+      <div class="about-text reveal" style="transition-delay:0.2s">
+        <!-- ✏️ Tu nombre y textos -->
+        <h3>DANDEV</h3>
+        <p>
+          I’m DanDev, a developer and designer focused on building modern, functional, 
+          and visually engaging digital experiences. I specialize in web development, 
+          bot automation, 
+          and interactive systems within Roblox Studio.
+        </p>
+        <p>
+          With each project, I strive to push my own limits and deliver results that not
+           only meet expectations but exceed them.
+           I am detail-oriented, creative, and passionate about my work.
+        </p>
+        <!-- ✏️ Agrega o quita habilidades según tu perfil -->
+        <div class="skills-grid">
+          <span class="skill-tag">Design</span>
+          <span class="skill-tag">3D Modeler</span>      
+          <span class="skill-tag">Creativity</span>
+          <span class="skill-tag">Digital Art</span>
+          <span class="skill-tag">Programming</span>
+          <span class="skill-tag">UI AND VFX</span>
+          <!-- <span class="skill-tag">Tu habilidad</span> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     PORTAFOLIO
+═══════════════════════════════════════ -->
+<section>
+  <div id="portafolio" class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-label">// 02 — WORKS</p>
+      <h2 class="section-title">PORTFOLIO</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <!-- FILTROS — los data-filter deben coincidir con data-cat de cada card -->
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" data-filter="ALL"   onclick="filterCards(this)">ALL</button>
+      <button class="filter-btn"        data-filter="DESIGN"  onclick="filterCards(this)">DESIGN</button>
+      <button class="filter-btn"        data-filter="3D Modeler"    onclick="filterCards(this)">3D Modeler</button>
+      <button class="filter-btn"        data-filter="UI AND VFX"    onclick="filterCards(this)">UI AND VFX</button>
+      <button class="filter-btn"        data-filter="PROGRAMMING"    onclick="filterCards(this)">PROGRAMMING</button>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         GRID DE TRABAJOS
+         ─────────────────────────────────────────────────────
+         CÓMO AÑADIR UN TRABAJO:
+         1. Copia una tarjeta entera (desde <!-- CARD --> hasta </div>)
+         2. Cambia el src de <img> o <video> por tu archivo en imagenes/ o videos/
+         3. Cambia data-cat por la categoría: diseño | foto | video | arte | otro
+         4. Cambia el data-id con un número único (1, 2, 3…)
+         5. Edita título y descripción dentro de .card-info
+
+         IMÁGENES → carpeta:  imagenes/
+         VIDEOS   → carpeta:  videos/
+         Formatos imagen: .jpg .jpeg .png .webp .gif
+         Formatos video:  .mp4 .webm
+    ══════════════════════════════════════════════════════ -->
+    <div class="portfolio-grid" id="portfolio-grid">
+
+      <!-- ── CARD 1 ── -->
+      <div class="portfolio-card reveal" data-cat="DESIGN" data-id="1"
+           onclick="openLightbox(this)" style="animation-delay:0s">
+        <span class="card-corner tl"></span>
+        <span class="card-corner tr"></span>
+        <span class="card-corner bl"></span>
+        <span class="card-corner br"></span>
+        <div class="card-media-wrap">
+          <!-- ✏️ Reemplaza con tu imagen -->
+          <img class="card-media" src="imagenes/Captura de pantalla 2026-04-27 142339.png" alt="Work 1" loading="lazy">
+          <div class="card-type-badge">◼ IMAGE</div>
+          <div class="card-overlay">
+            <button class="overlay-btn">🔍</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Design</div>
+          <!-- ✏️ Título y descripción -->
+          <div class="card-title">Design Shirt</div>
+          <div class="card-desc">This still-unfinished work is for a shirt printing company. I will update the results over time. Photoshop and Adobe Illustrator were used in its creation.</div>
+        </div>
+      </div>
+
+      <!-- ── CARD 2 ── -->
+      <div class="portfolio-card reveal" data-cat="3D Modeler" data-id="2"
+           onclick="openLightbox(this)" style="animation-delay:0.1s">
+        <span class="card-corner tl"></span>
+        <span class="card-corner tr"></span>
+        <span class="card-corner bl"></span>
+        <span class="card-corner br"></span>
+        <div class="card-media-wrap">
+          <img class="card-media" src="imagenes/3dbl.png" alt="Work 2" loading="lazy">
+          <div class="card-type-badge">◼ IMAGE</div>
+          <div class="card-overlay">
+            <button class="overlay-btn">🔍</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">3D Modeler</div>
+          <div class="card-title">Modeling accessories and more in Blender </div>
+          <div class="card-desc">We model accessories for Roblox in Blender.</div>
+        </div>
+      </div>
+
+      <!-- ── CARD 3 — VIDEO ── -->
+      <div class="portfolio-card reveal" data-cat="UI AND VFX" data-id="3"
+           onclick="openLightbox(this)" style="animation-delay:0.2s">
+        <span class="card-corner tl"></span>
+        <span class="card-corner tr"></span>
+        <span class="card-corner bl"></span>
+        <span class="card-corner br"></span>
+        <div class="card-media-wrap">
+          <!-- ✏️ Para videos: usa <video> con poster (imagen de miniatura) -->
+          <video class="card-media"
+                 src="videos/0425.mp4"
+                 poster="imagenes/pos.png"
+                 muted loop preload="none"></video>
+          <div class="card-type-badge">▶ VIDEO</div>
+          <div class="card-overlay">
+            <button class="overlay-btn">▶</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">UI AND VFX</div>
+          <div class="card-title">UI INVENTORY</div>
+          <div class="card-desc">Functional programmed inventory inspired by solo leveling.</div>
+        </div>
+      </div>
+
+
+            <!-- ── CARD 4 — VIDEO ── -->
+      <div class="portfolio-card reveal" data-cat="UI AND VFX" data-id="4"
+           onclick="openLightbox(this)" style="animation-delay:0.2s">
+        <span class="card-corner tl"></span>
+        <span class="card-corner tr"></span>
+        <span class="card-corner bl"></span>
+        <span class="card-corner br"></span>
+        <div class="card-media-wrap">
+          <!-- ✏️ Para videos: usa <video> con poster (imagen de miniatura) -->
+          <video class="card-media"
+                 src="videos/VFX.mp4"
+                 poster="imagenes/pos2.png"
+                 muted loop preload="none"></video>
+          <div class="card-type-badge">▶ VIDEO</div>
+          <div class="card-overlay">
+            <button class="overlay-btn">▶</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">UI AND VFX</div>
+          <div class="card-title">VFX Magic</div>
+          <div class="card-desc">VFX made in Blender, magical style, animated.</div>
+        </div>
+      </div>
+
+
+      <!--
+      ════════════════════════════════════════════
+      ✏️  PARA AGREGAR MÁS TRABAJOS, COPIA ESTO:
+      ════════════════════════════════════════════
+
+      <div class="portfolio-card reveal" data-cat="CATEGORIA" data-id="NUMERO"
+           onclick="openLightbox(this)" style="animation-delay:0.Xs">
+        <span class="card-corner tl"></span>
+        <span class="card-corner tr"></span>
+        <span class="card-corner bl"></span>
+        <span class="card-corner br"></span>
+        <div class="card-media-wrap">
+          <img class="card-media" src="imagenes/TU-IMAGEN.jpg" alt="Descripción" loading="lazy">
+          <div class="card-type-badge">◼ IMAGEN</div>
+          <div class="card-overlay">
+            <button class="overlay-btn">🔍</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">CATEGORÍA</div>
+          <div class="card-title">Título del trabajo</div>
+          <div class="card-desc">Descripción.</div>
+        </div>
+      </div>
+
+      ════════════════════════════════════════════
+      -->
+
+    </div><!-- /portfolio-grid -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CONTACTO
+═══════════════════════════════════════ -->
+<section id="contacto">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-label">// 03 — CONTACT</p>
+      <h2 class="section-title">LET'S TALK</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-info">
+          <h3>DO YOU HAVE A PROJECT?</h3>
+          <!-- ✏️ Tu mensaje de contacto -->
+          <p>I'm available for freelance projects, collaborations, and new opportunities. Feel free to contact me.</p>
+        </div>
+        <div class="contact-items">
+          <!-- ✏️ Reemplaza con tus datos reales -->
+          <a class="contact-item" href="mailto:teufelcontact@gmail.com">
+            <div class="contact-item-icon">📧</div>
+            <div>
+              <div class="contact-item-label">Email</div>
+              <div class="contact-item-value">teufelcontact@gmail.com</div>
+            </div>
+          </a>
+          <a class="contact-item" href="https://discord.com/users/539998567943634945" target="_blank">
+            <div class="contact-item-icon">💬</div>
+            <div>
+              <div class="contact-item-label">Discord</div>
+              <div class="contact-item-value">@dandevvv</div>
+            </div>
+          </a>
+          <!-- Agrega más si necesitas: TikTok, YouTube, LinkedIn... -->
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:0.2s">
+        <form class="contact-form" onsubmit="handleForm(event)">
+          <div class="form-row">
+            <input type="text"  placeholder="Your Name"  required>
+            <input type="email" placeholder="Your Email"   required>
+          </div>
+          <input   type="text" placeholder="Topic">
+          <textarea placeholder="Tell me about your project..."></textarea>
+          <button type="submit" class="send-btn">SEND MESSAGE ✦</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <!-- ✏️ Pon tu nombre -->
+  <p>Made with <span>♥</span> and passion · <span>DANDEV</span> © 2026</p>
+  <p style="margin-top:0.5rem;font-size:0.7rem;opacity:0.3;letter-spacing:3px">ポートフォリオ · PORTFOLIO · 포트폴리오</p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-content">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div id="lb-media"></div>
+    <div class="lightbox-info">
+      <div class="lightbox-title" id="lb-title"></div>
+      <div class="lightbox-desc"  id="lb-desc"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATION -->
+<div class="notification" id="notification"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   LOADING SCREEN
+══════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  const bar = document.getElementById('loading-bar');
+  const pct = document.getElementById('loading-percent');
+  const scr = document.getElementById('loading-screen');
+  let p = 0;
+  const iv = setInterval(() => {
+    p += Math.random() * 15 + 5;
+    if (p >= 100) {
+      p = 100; clearInterval(iv);
+      setTimeout(() => { scr.classList.add('fade-out'); setTimeout(() => scr.remove(), 800); }, 300);
+    }
+    bar.style.width = p + '%';
+    pct.textContent = Math.round(p) + '%';
+  }, 80);
+});
+
+/* ══════════════════════════════════════════
+   CURSOR PERSONALIZADO
+══════════════════════════════════════════ */
+const cursor = document.getElementById('cursor');
+const trail  = document.getElementById('cursor-trail');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left = mx-6+'px'; cursor.style.top = my-6+'px';
+});
+setInterval(() => {
+  tx+=(mx-tx)*0.15; ty+=(my-ty)*0.15;
+  trail.style.left=tx-15+'px'; trail.style.top=ty-15+'px';
+}, 16);
+document.querySelectorAll('a,button,.portfolio-card,.filter-btn,.contact-item,.overlay-btn').forEach(el => {
+  el.addEventListener('mouseenter', ()=>cursor.style.transform='scale(2)');
+  el.addEventListener('mouseleave', ()=>cursor.style.transform='scale(1)');
+});
+
+/* ══════════════════════════════════════════
+   BARRA DE PROGRESO SCROLL
+══════════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+});
+
+/* ══════════════════════════════════════════
+   PARTÍCULAS ANIMADAS
+══════════════════════════════════════════ */
+const canvas = document.getElementById('particles-canvas');
+const ctx    = canvas.getContext('2d');
+canvas.width=innerWidth; canvas.height=innerHeight;
+window.addEventListener('resize',()=>{canvas.width=innerWidth;canvas.height=innerHeight;});
+const colors=['#00f5ff','#7b2fff','#ff006e','#ffd700'];
+const pts = Array.from({length:80},()=>({
+  x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+  vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+  r:Math.random()*2+.5, a:Math.random()*.5+.1,
+  c:colors[Math.floor(Math.random()*4)]
+}));
+(function loop(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pts.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0)p.x=canvas.width; if(p.x>canvas.width)p.x=0;
+    if(p.y<0)p.y=canvas.height; if(p.y>canvas.height)p.y=0;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.c+Math.floor(p.a*255).toString(16).padStart(2,'0');
+    ctx.fill();
+  });
+  for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+    const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.sqrt(dx*dx+dy*dy);
+    if(d<120){ ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y);
+      ctx.strokeStyle=`rgba(0,245,255,${.07*(1-d/120)})`; ctx.lineWidth=.5; ctx.stroke(); }
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* ══════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════ */
+const obs = new IntersectionObserver(entries =>
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }),
+  {threshold:0.1}
+);
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ══════════════════════════════════════════
+   FILTROS DE PORTAFOLIO
+══════════════════════════════════════════ */
+function filterCards(btn) {
+  const filter = btn.dataset.filter;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.portfolio-card').forEach(card => {
+    const match = filter==='ALL' || card.dataset.cat===filter;
+    card.classList.toggle('hidden', !match);
+    if(match) card.style.animationName='none', void card.offsetWidth, card.style.animationName='';
+  });
+}
+
+/* ══════════════════════════════════════════
+   VIDEO HOVER PLAY
+══════════════════════════════════════════ */
+document.querySelectorAll('.portfolio-card').forEach(card => {
+  const video = card.querySelector('video');
+  if(!video) return;
+  card.addEventListener('mouseenter', ()=>video.play());
+  card.addEventListener('mouseleave', ()=>{ video.pause(); video.currentTime=0; });
+});
+
+/* ══════════════════════════════════════════
+   LIGHTBOX
+══════════════════════════════════════════ */
+function openLightbox(card) {
+  const media   = card.querySelector('.card-media');
+  const title   = card.querySelector('.card-title').textContent;
+  const desc    = card.querySelector('.card-desc')?.textContent || '';
+  const lbMedia = document.getElementById('lb-media');
+
+  if(media.tagName==='VIDEO') {
+    lbMedia.innerHTML = `<video class="lightbox-media" src="${media.src}" controls autoplay></video>`;
+  } else {
+    lbMedia.innerHTML = `<img class="lightbox-media" src="${media.src}" alt="${title}">`;
+  }
+  document.getElementById('lb-title').textContent = title;
+  document.getElementById('lb-desc').textContent  = desc;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  if(e && e.target!==document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+  document.getElementById('lightbox').classList.remove('active');
+  document.getElementById('lb-media').innerHTML='';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
+
+/* ══════════════════════════════════════════
+   FORMULARIO DE CONTACTO
+══════════════════════════════════════════ */
+function handleForm(e) {
+  e.preventDefault();
+  const n = document.getElementById('notification');
+  n.textContent = "✅ Message sent — I'll reply soon";
+  n.classList.add('show');
+  setTimeout(()=>n.classList.remove('show'), 3500);
+  e.target.reset();
+}
+</script>
+</body>
+</html>
