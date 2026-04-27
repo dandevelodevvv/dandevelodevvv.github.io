@@ -552,8 +552,11 @@ body {
 
   /* CONTACT */
   .contact-grid {
-    display: grid; grid-template-columns: 1fr 1.5fr;
-    gap: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
   }
   .contact-info h3 {
     font-family: 'Orbitron', sans-serif;
@@ -1009,20 +1012,6 @@ body {
           <!-- Agrega más si necesitas: TikTok, YouTube, LinkedIn... -->
         </div>
       </div>
-
-      <div class="reveal" style="transition-delay:0.2s">
-        <form class="contact-form" onsubmit="handleForm(event)">
-          <div class="form-row">
-            <input type="text"  placeholder="Your Name"  required>
-            <input type="email" placeholder="Your Email"   required>
-          </div>
-          <input   type="text" placeholder="Topic">
-          <textarea placeholder="Tell me about your project..."></textarea>
-          <button type="submit" class="send-btn">SEND MESSAGE ✦</button>
-        </form>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- FOOTER -->
@@ -1186,17 +1175,7 @@ function closeLightbox(e) {
 }
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
 
-/* ══════════════════════════════════════════
-   FORMULARIO DE CONTACTO
-══════════════════════════════════════════ */
-function handleForm(e) {
-  e.preventDefault();
-  const n = document.getElementById('notification');
-  n.textContent = "✅ Message sent — I'll reply soon";
-  n.classList.add('show');
-  setTimeout(()=>n.classList.remove('show'), 3500);
-  e.target.reset();
-}
+
 
 function playClickSound() {
   const sound = document.getElementById('click-sound');
